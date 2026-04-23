@@ -1,0 +1,69 @@
+
+
+{
+    "summary": {
+        "total": 1,
+        "pirated": 1,
+        "clean": 0,
+        "pending": 0
+    },
+    "results": [
+        {
+            "job_id": "2b801e64-d99f-427b-883a-c346a4a6a8c4",
+            "source_video_id": "MAm0RLQpYas",
+            "video_url": "https://www.youtube.com/watch?v=MAm0RLQpYas",
+            "title": "Final | India vs Pakistan | DP World Asia Cup 2025",
+            "author": "Asian Cricket Council",
+            "duration": "",
+            "views": 77993880,
+            "posted_ago": "6 months ago",
+            "original_id": "8bb6f512-be7a-4680-a801-cf9ca38db2a8",
+            "source": "crawler",
+            "created_at": "2026-04-23T08:40:39.664Z",
+            "clip_storage_path": "clips/2b801e64-d99f-427b-883a-c346a4a6a8c4.mp4",
+            "clip_url": "https://res.cloudinary.com/dwmnyuamv/video/upload/v1776933664/clips/2b801e64-d99f-427b-883a-c346a4a6a8c4.mp4",
+            "clip_size_mb": 4.95,
+            "completed_at": "2026-04-23T08:41:05.955Z",
+            "is_pirated": true,
+            "matched_frames": 42,
+            "scores": {
+                "visual": 0.89,
+                "temporal": 0.53,
+                "audio": 0.7,
+                "ocr": 0.1
+            },
+            "confidence": 0.96,
+            "total_frames": 60,
+            "status": "completed"
+        }
+    ]
+}
+these are the different api my frontend has to hande the text one is recieved analysis and then there is status the one with original id and everything that tells now the clipped image is ready to work,  then there is one where we send video url title sport and getback originalid status and message
+the image with the dark background has all the routes of backed we have to work with originals, analyze and results the white image tells the relation between frontend and backend 
+
+tell me only how will i make my handlers for these api
+
+Your api/index.js is already complete. Every route from the backend is covered. Here's the full picture so you understand exactly what each handler does and where it's used:
+What you send → What you get back → Where it's used in your pages
+uploadOriginal — POST /api/originals
+You send { video_url, title, sport, event }, you get back { original_id, status, message }. This is for registering a new protected video. Your Upload page doesn't call this directly — it's a one-time admin action. You can call it from a separate form or Postman for now.
+getOriginals — GET /api/originals
+You send nothing, you get back the array of originals. Used in Upload.jsx to populate the "Reference Fingerprint" dropdown and in useDashboard.js to keep the list fresh.
+analyzeUrl — POST /api/analyze with JSON
+You send { video_url, original_id, source, notes }, you get back { job_id, status, message }. Called in Upload.jsx when mode is "url".
+analyzeFile — POST /api/analyze with FormData
+You send the actual video file + metadata as multipart form, you get back the same { job_id, status, message }. Called in Upload.jsx when mode is "file". The key thing here — never set Content-Type manually, the browser adds the multipart boundary automatically.
+getJobResult — GET /api/results/:jobId
+You send just the job ID in the URL, you get back the full job object with status, scores, confidence, is_pirated, matched_frames, clip_url etc. This is what usePolling.js calls every 2.5 seconds until status is "completed" or "failed". Also used in Analysis.jsx for the initial load.
+getResults — GET /api/results
+You send optional filters ?status=&limit=, you get back { summary: { total, pirated, clean, pending }, results: [] }. Used in useDashboard.js (every 8s) and ResultsList.jsx (every 8s independently).
+getHealth — GET /api/health
+You send nothing, you get back any 200 response. Used in useDashboard.js — if it resolves, state.health becomes truthy and the topbar shows "ML Hub: Connected".
+The flow connecting all of these in sequence is:
+uploadOriginal (once, to register) 
+    → getOriginals (to fill dropdown)
+    → analyzeUrl / analyzeFile (submit job)  
+    → getJobResult in usePolling (poll every 2.5s)
+    → navigate to /results/:jobId when done
+    → getResults (dashboard refreshes every 8s)
+Everything is already wired. The only thing you'd want to add is a page/button that calls uploadOriginal so users can register new originals from the UI — right now that's only doable via Postman/curl.
