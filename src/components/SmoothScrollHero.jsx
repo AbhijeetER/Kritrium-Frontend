@@ -6,39 +6,48 @@ import {
   useTransform,
 } from "framer-motion";
 import { useRef } from "react";
-import img1 from "../assets/img1.jpg";
-import img2 from "../assets/img2.jpg";
-import img3 from "../assets/img3.jpg";
-import img4 from "../assets/img4.jpg";
-import img5 from "../assets/img5.jpg";
-import img6 from "../assets/img6.jpg";
-import img7 from "../assets/img7.jpg";
-import img8 from "../assets/img8.jpg";
+import img1 from "../assets/img1.png";
+import img2 from "../assets/img2.png";
+import img3 from "../assets/img3.png";
+import img4 from "../assets/img4.png";
+import img5 from "../assets/img5.png";
+import img6 from "../assets/img6.png";
+import img7 from "../assets/img7.webp";
+import img8 from "../assets/img8.png";
 
 const SECTION_HEIGHT = 900;
 
 const images = [img1, img2, img3, img4, img5, img6, img7, img8];
-
 const timeline = [
   {
     phase: "01",
-    title: "Upload Content",
-    description: "User uploads file or provides URL — any platform supported.",
+    title: "Project Kickoff",
+    description: "18th Apr 2026 — Ideation, architecture planning, and defining core piracy detection pipeline.",
   },
   {
     phase: "02",
-    title: "Frame Extraction",
-    description: "Adaptive sampling extracts key frames without redundancy.",
+    title: "MVP Part 1 (URL Analysis)",
+    description: "18th Apr → 26th Apr — Built core pipeline: video download, frame extraction, summary generation, and AI-based detection using URL input.",
   },
   {
     phase: "03",
-    title: "AI Matching",
-    description: "Deep embeddings compared against registered originals.",
+    title: "MVP Part 2 (Multi-Input Support)",
+    description: "Post 26th Apr — Extending system to support direct image & video uploads alongside URLs for broader detection coverage.",
   },
   {
     phase: "04",
-    title: "Detection Result",
-    description: "Four-signal confidence score and piracy verdict returned.",
+    title: "Enhanced Detection Engine",
+    description: "Improving accuracy with multi-signal scoring (visual, audio, temporal, OCR) and better confidence calibration.",
+  },
+  {
+    phase: "05",
+    title: "Dashboard & Monitoring",
+    description: "Building real-time dashboard with telemetry, analysis reports, and forensic insights for detected content.",
+  },
+  {
+    phase: "06",
+    title: "Live Streaming Detection (Future)",
+    description: "Planned — Real-time piracy detection for live streams using continuous frame sampling and behavioral tracking.",
   },
 ];
 
@@ -129,7 +138,7 @@ const Timeline = () => (
       className="mb-16 text-3xl md:text-4xl font-black tracking-tight"
       style={{ color: "#030301" }}
     >
-      Workflow
+      TimeLine
     </motion.h2>
 
     <div className="space-y-8">
