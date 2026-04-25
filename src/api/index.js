@@ -1,6 +1,4 @@
-import dotenv from "dotenv";
-dotenv.config();
-const BASE = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 // ─── ORIGINALS ──────────────────────────────────────────────
 export async function uploadOriginal({ video_url, title, sport, event }) {
