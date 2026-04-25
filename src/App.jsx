@@ -1,34 +1,57 @@
+import React from "react";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { AppProvider } from "./context/AppContext";
+
+// Landing
+import Landing from "./landing/Landing";
+
+// Dashboard shell
+import Layout from "./components/layout/Layout";
+
+// Pages
+import Dashboard  from "./pages/Dashboard";
+import Upload     from "./pages/Upload";
+import ResultsList from "./pages/ResultsList";
+import Analysis   from "./pages/Analysis";
+
+// Global styles (Tailwind base + JetBrains Mono font import)
 import "./index.css";
 
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import Landing from "./landing/Landing";
-import Dashboard from "./pages/Dashboard";
-import Upload from "./pages/Upload";
-import { RetractingSidebar } from "./components/RetractingSidebar";
-
-function LayoutWrapper({ children }) {
+// ─── inner router: decides whether to wrap in Layout ────────
+function AppRoutes() {
   const location = useLocation();
 
-  const hideSidebar = location.pathname.startsWith("/");
+  // Landing page gets NO sidebar/topbar shell
+  const isLanding = location.pathname === "/";
+
+  if (isLanding) {
+    return (
+      <Routes>
+        <Route path="/" element={<Landing />} />
+      </Routes>
+    );
+  }
 
   return (
-    <div className="flex">
-      {!hideSidebar && <RetractingSidebar />}
-      <div className="flex-1">{children}</div>
-    </div>
+    <Layout>
+      <Routes>
+        <Route path="/dashboard"          element={<Dashboard />} />
+        <Route path="/upload"             element={<Upload />} />
+        <Route path="/results"            element={<ResultsList />} />
+        <Route path="/results/:jobId"     element={<Analysis />} />
+        {/* catch-all → dashboard */}
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      </Routes>
+    </Layout>
   );
 }
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <LayoutWrapper>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/upload" element={<Upload />} />
-        </Routes>
-      </LayoutWrapper>
-    </BrowserRouter>
+    <AppProvider>
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </AppProvider>
   );
 }
