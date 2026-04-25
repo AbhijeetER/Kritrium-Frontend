@@ -191,7 +191,7 @@ export default function ResultsList() {
   );
 }
 
-// ─── SUB-COMPONENTS 
+// ─── SUB-COMPONENTS ──────────────────────────────────────────
 function StatusBadge({ r }) {
   const base = "inline-flex items-center font-mono text-[10px] font-extrabold px-[7px] py-[2px] rounded-[3px] tracking-[0.05em]";
 
@@ -214,7 +214,7 @@ function StatusBadge({ r }) {
   );
 }
 
-
+// ─── HELPERS ─────────────────────────────────────────────────
 function truncateUrl(url) {
   if (!url) return "—";
   try {

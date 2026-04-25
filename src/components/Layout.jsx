@@ -1,13 +1,59 @@
 import React, { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { useApp } from "../../context/AppContext";
+import { useApp } from "../context/AppContext";
 
 const NAV = [
-  { path: "/dashboard", label: "Command Center",   icon: <GridIcon /> },
-  { path: "/upload",    label: "Ingestion Engine",  icon: <UploadIcon /> },
-  { path: "/results",   label: "Forensic Analysis", icon: <ScanIcon /> },
+  { path: "/dashboard", label: "Command Center",   icon: GridIcon },
+  { path: "/upload",    label: "Ingestion Engine", icon: UploadIcon },
+  { path: "/results",   label: "Forensic Analysis", icon: ScanIcon },
 ];
+// ─── ICONS ─────────────────────────────────────────
+function OwlIcon() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+      <path d="M16 2L28 8V16C28 22.627 22.627 28 16 28C9.373 28 4 22.627 4 16V8L16 2Z" fill="currentColor"/>
+    </svg>
+  );
+}
 
+function GridIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <rect x="3" y="3" width="7" height="7"/>
+      <rect x="14" y="3" width="7" height="7"/>
+      <rect x="3" y="14" width="7" height="7"/>
+      <rect x="14" y="14" width="7" height="7"/>
+    </svg>
+  );
+}
+
+function UploadIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+      <polyline points="17 8 12 3 7 8"/>
+      <line x1="12" y1="3" x2="12" y2="15"/>
+    </svg>
+  );
+}
+
+function ScanIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <circle cx="11" cy="11" r="8"/>
+      <path d="M21 21l-4.35-4.35"/>
+    </svg>
+  );
+}
+
+function SearchIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <circle cx="11" cy="11" r="8"/>
+      <path d="M21 21l-4.35-4.35"/>
+    </svg>
+  );
+}
 export default function Layout({ children }) {
   const { state } = useApp();
   const location = useLocation();
