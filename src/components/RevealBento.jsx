@@ -1,217 +1,205 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { twMerge } from "tailwind-merge";
-import { FiArrowRight, FiMail, FiMapPin } from "react-icons/fi";
-import { SiGithub, SiTiktok, SiX, SiYoutube } from "react-icons/si";
+import { SiGithub, SiYoutube} from "react-icons/si";
+import {
+  FaUserAstronaut,
+  FaUserNinja,
+  FaUserSecret,
+  FaUserTie,
+} from "react-icons/fa";
+import BorderGlow from "./BuildBoxShadow";
+import { CiLinkedin } from "react-icons/ci";
+
 
 export const RevealBento = () => {
   return (
-    <div className="min-h-screen bg-zinc-900 px-4 py-12 text-zinc-50">
-      <Logo />
+    <div className="px-4 py-10" style={{ background: "#030301" }}>
       <motion.div
         initial="initial"
         animate="animate"
-        transition={{
-          staggerChildren: 0.05,
-        }}
-        className="mx-auto grid max-w-4xl grid-flow-dense grid-cols-12 gap-4"
+        transition={{ staggerChildren: 0.06 }}
+        className="mx-auto grid max-w-5xl grid-cols-12 gap-4"
       >
         <HeaderBlock />
         <SocialsBlock />
         <AboutBlock />
-        <LocationBlock />
-        <EmailListBlock />
+        <TeamBlock />
       </motion.div>
-      <Footer />
     </div>
   );
 };
 
-const Block = ({ className, ...rest }) => {
-  return (
-    <motion.div
-      variants={{
-        initial: {
-          scale: 0.5,
-          y: 50,
-          opacity: 0,
-        },
-        animate: {
-          scale: 1,
-          y: 0,
-          opacity: 1,
-        },
-      }}
-      transition={{
-        type: "spring",
-        mass: 3,
-        stiffness: 400,
-        damping: 50,
-      }}
-      className={twMerge(
-        "col-span-4 rounded-lg border border-zinc-700 bg-zinc-800 p-6",
-        className
-      )}
-      {...rest}
-    />
-  );
-};
+const Block = ({ className, ...rest }) => (
+  <motion.div
+    variants={{
+      initial: { scale: 0.7, y: 40, opacity: 0 },
+      animate: { scale: 1, y: 0, opacity: 1 },
+    }}
+    transition={{ type: "spring", stiffness: 280, damping: 22 }}
+    className={twMerge("rounded-2xl border p-6", className)}
+    style={{ borderColor: "rgba(255,255,255,0.07)" }}
+    {...rest}
+  />
+);
 
 const HeaderBlock = () => (
-  <Block className="col-span-12 row-span-2 md:col-span-6">
-    <img
-      src="https://api.dicebear.com/8.x/lorelei-neutral/svg?seed=John"
-      alt="avatar"
-      className="mb-4 size-14 rounded-full"
-    />
-    <h1 className="mb-12 text-4xl font-medium leading-tight">
-      We are KRITRIUM{" "}
-      <span className="text-zinc-400">
-        together are building this website.
+  <Block
+    className="col-span-12 md:col-span-6"
+    style={{ background: "#FFFFF3" }}
+  >
+    <img src="/icon.webp" className="mb-4 h-12 w-12" alt="Kritrium logo" />
+    <h1
+      className="text-3xl md:text-4xl leading-tight font-black tracking-tight"
+      style={{ color: "#030301" }}
+    >
+      we are{" "}
+      <span style={{ color: "#FF4365" }}>KRITRIUM</span>
+      {" — "}
+      <span style={{ color: "rgba(3,3,1,0.4)" }}>
+        intelligent piracy detection.
       </span>
     </h1>
-    <a
-      href="#"
-      className="flex items-center gap-1 text-red-300 hover:underline"
-    >
-      Contact me <FiArrowRight />
-    </a>
   </Block>
 );
 
 const SocialsBlock = () => (
-  <>
-    <Block
-      whileHover={{
-        rotate: "2.5deg",
-        scale: 1.1,
-      }}
-      className="col-span-6 bg-red-500 md:col-span-3"
-    >
-      <a
-        href="#"
-        className="grid h-full place-content-center text-3xl text-white"
+  <div className="col-span-12 md:col-span-6 grid grid-cols-2 gap-4">
+    <GlowWrapper>
+      <Block
+        className="flex items-center justify-center h-[100px]"
+        style={{ background: "#FF4365" }}
       >
-        <SiYoutube />
-      </a>
-    </Block>
-    <Block
-      whileHover={{
-        rotate: "-2.5deg",
-        scale: 1.1,
-      }}
-      className="col-span-6 bg-green-600 md:col-span-3"
-    >
-      <a
-        href="#"
-        className="grid h-full place-content-center text-3xl text-white"
+        <a
+          href="https://youtube.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="YouTube"
+        >
+          <SiYoutube className="text-3xl text-white" />
+        </a>
+      </Block>
+    </GlowWrapper>
+
+    <GlowWrapper>
+      <Block
+        className="flex items-center justify-center h-[100px]"
+        style={{ background: "#0A66C2" }}
       >
-        <SiGithub />
-      </a>
-    </Block>
-    <Block
-      whileHover={{
-        rotate: "-2.5deg",
-        scale: 1.1,
-      }}
-      className="col-span-6 bg-zinc-50 md:col-span-3"
-    >
-      <a
-        href="#"
-        className="grid h-full place-content-center text-3xl text-black"
+        <a
+          href="https://linkedin.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="LinkedIn"
+        >
+          <CiLinkedin className="text-3xl text-white" />
+        </a>
+      </Block>
+    </GlowWrapper>
+
+    <GlowWrapper>
+      <Block
+        className="flex items-center justify-center h-[100px] font-mono font-bold text-sm tracking-widest"
+        style={{ background: "#00D9C0", color: "#030301" }}
       >
-        <SiTiktok />
-      </a>
-    </Block>
-    <Block
-      whileHover={{
-        rotate: "2.5deg",
-        scale: 1.1,
-      }}
-      className="col-span-6 bg-blue-500 md:col-span-3"
-    >
-      <a
-        href="#"
-        className="grid h-full place-content-center text-3xl text-white"
+        <a href="/upload">TRY PLATFORM →</a>
+      </Block>
+    </GlowWrapper>
+
+    <GlowWrapper>
+      <Block
+        className="flex items-center justify-center h-[100px]"
+        style={{ background: "#030301", border: "1px solid rgba(255,255,255,0.1)" }}
       >
-        <SiX />
-      </a>
-    </Block>
-  </>
+        <a
+          href="https://github.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="GitHub"
+        >
+          <SiGithub className="text-3xl" style={{ color: "#FFFFF3" }} />
+        </a>
+      </Block>
+    </GlowWrapper>
+  </div>
 );
 
 const AboutBlock = () => (
-  <Block className="col-span-12 text-3xl leading-snug">
-    <p>
-      Our Project{" "}
-      <span className="text-zinc-400">
-       This is an ai based piracy detector
+  <Block
+    className="col-span-12 md:col-span-6 text-2xl leading-snug"
+    style={{ background: "#111" }}
+  >
+    <p style={{ color: "rgba(255,255,253,0.9)" }}>
+      Our platform —{" "}
+      <span style={{ color: "rgba(255,255,253,0.35)" }}>
+        an AI-powered system to detect unauthorized content usage across the web,
+        in real-time, at scale.
       </span>
     </p>
   </Block>
 );
 
-const LocationBlock = () => (
-  <Block className="col-span-12 flex flex-col items-center gap-4 md:col-span-3">
-    <FiMapPin className="text-3xl" />
-    <p className="text-center text-lg text-zinc-400">AI aspce</p>
-  </Block>
-);
+const TeamBlock = () => {
+  const members = [
+    { icon: <FaUserAstronaut />, link: "https://linkedin.com" },
+    { icon: <FaUserNinja />, link: "https://linkedin.com" },
+    { icon: <FaUserSecret />, link: "https://linkedin.com" },
+    { icon: <FaUserTie />, link: "https://linkedin.com" },
+  ];
 
-const EmailListBlock = () => (
-  <Block className="col-span-12 md:col-span-9">
-    <p className="mb-3 text-lg">Use our Project</p>
-    <form
-      onSubmit={(e) => e.preventDefault()}
-      className="flex items-center gap-2"
-    >
-      <input
-        type="email"
-        placeholder="Enter your email"
-        className="w-full rounded border border-zinc-700 bg-zinc-800 px-3 py-1.5 transition-colors focus:border-red-300 focus:outline-0"
-      />
-      <button
-        type="submit"
-        className="flex items-center gap-2 whitespace-nowrap rounded bg-zinc-50 px-3 py-2 text-sm font-medium text-zinc-900 transition-colors hover:bg-zinc-300"
-      >
-        <FiMail /> Join the fight
-      </button>
-    </form>
-  </Block>
-);
-
-const Logo = () => {
-  // Temp logo from https://logoipsum.com/
   return (
-    <svg
-      width="40"
-      height="auto"
-      viewBox="0 0 50 39"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="mx-auto mb-12 fill-zinc-50"
-    >
-      <path
-        d="M16.4992 2H37.5808L22.0816 24.9729H1L16.4992 2Z"
-        stopColor="#000000"
-      ></path>
-      <path
-        d="M17.4224 27.102L11.4192 36H33.5008L49 13.0271H32.7024L23.2064 27.102H17.4224Z"
-        stopColor="#000000"
-      ></path>
-    </svg>
+    <GlowWrapper className="col-span-12 md:col-span-6">
+      <Block style={{ background: "#111" }}>
+        <p
+          className="mb-6 text-sm font-mono font-bold tracking-widest uppercase"
+          style={{ color: "#00D9C0" }}
+        >
+          Team
+        </p>
+        <div className="grid grid-cols-4 gap-3">
+          {members.map((m, i) => (
+            <a
+              key={i}
+              href={m.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center p-4 rounded-xl text-xl transition-all duration-200"
+              style={{
+                border: "1px solid rgba(255,255,255,0.1)",
+                color: "rgba(255,255,253,0.5)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "rgba(0,217,192,0.1)";
+                e.currentTarget.style.color = "#00D9C0";
+                e.currentTarget.style.borderColor = "rgba(0,217,192,0.3)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "transparent";
+                e.currentTarget.style.color = "rgba(255,255,253,0.5)";
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
+              }}
+            >
+              {m.icon}
+            </a>
+          ))}
+        </div>
+      </Block>
+    </GlowWrapper>
   );
 };
 
-const Footer = () => {
-  return (
-    <footer className="mt-12">
-      <p className="text-center text-zinc-400">
-        Made with ❤️ by{" "}
-        <a href="#" className="text-red-300 hover:underline">
-          @tomisloading
-        </a>
-      </p>
-    </footer>
-  );
-};
+const GlowWrapper = ({ children, className }) => (
+  <div className={className}>
+    <BorderGlow
+      glowColor="180 100 50"
+      borderRadius={16}
+      glowRadius={80}
+      glowIntensity={4}
+      backgroundColor="#111111"
+      colors={["#00D9C0", "#FF4365", "#FFFFF3"]}
+      fillOpacity={0.3}
+    >
+      {children}
+    </BorderGlow>
+  </div>
+);

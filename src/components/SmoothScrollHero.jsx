@@ -5,201 +5,158 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { SiSpacex } from "react-icons/si";
-import { FiArrowRight, FiMapPin } from "react-icons/fi";
 import { useRef } from "react";
+import img1 from "../assets/img1.jpg";
+import img2 from "../assets/img2.jpg";
+import img3 from "../assets/img3.jpg";
+import img4 from "../assets/img4.jpg";
+import img5 from "../assets/img5.jpg";
+import img6 from "../assets/img6.jpg";
+import img7 from "../assets/img7.jpg";
+import img8 from "../assets/img8.jpg";
+
+const SECTION_HEIGHT = 900;
+
+const images = [img1, img2, img3, img4, img5, img6, img7, img8];
+
+const timeline = [
+  {
+    phase: "01",
+    title: "Upload Content",
+    description: "User uploads file or provides URL — any platform supported.",
+  },
+  {
+    phase: "02",
+    title: "Frame Extraction",
+    description: "Adaptive sampling extracts key frames without redundancy.",
+  },
+  {
+    phase: "03",
+    title: "AI Matching",
+    description: "Deep embeddings compared against registered originals.",
+  },
+  {
+    phase: "04",
+    title: "Detection Result",
+    description: "Four-signal confidence score and piracy verdict returned.",
+  },
+];
 
 export const SmoothScrollHero = () => {
   return (
-    <div className="bg-zinc-950">
-      <ReactLenis
-        root
-        options={{
-          // Learn more -> https://github.com/darkroomengineering/lenis?tab=readme-ov-file#instance-settings
-          lerp: 0.05,
-          //   infinite: true,
-          //   syncTouch: true,
-        }}
-      >
-        <Nav />
-        <Hero />
-        <Schedule />
-      </ReactLenis>
+    <div style={{ background: "#FFFFF3", color: "#030301" }}>
+      <Hero />
+      <Timeline />
     </div>
   );
 };
 
-const Nav = () => {
-  return (
-    <nav className="fixed left-0 right-0 top-0 z-50 flex items-center justify-between px-6 py-3 text-white">
-      <SiSpacex className="text-3xl mix-blend-difference" />
-      <button
-        onClick={() => {
-          document.getElementById("launch-schedule")?.scrollIntoView({
-            behavior: "smooth",
-          });
-        }}
-        className="flex items-center gap-1 text-xs text-zinc-400"
-      >
-        LAUNCH SCHEDULE <FiArrowRight />
-      </button>
-    </nav>
-  );
-};
-
-const SECTION_HEIGHT = 1500;
-
-const Hero = () => {
-  return (
+const Hero = () => (
+  <div
+    style={{ height: `calc(${SECTION_HEIGHT}px + 100vh)` }}
+    className="relative w-full"
+  >
+    <CenterImage />
+    <ParallaxImages />
     <div
-      style={{ height: `calc(${SECTION_HEIGHT}px + 100vh)` }}
-      className="relative w-full"
-    >
-      <CenterImage />
-
-      <ParallaxImages />
-
-      <div className="absolute bottom-0 left-0 right-0 h-96 bg-gradient-to-b from-zinc-950/0 to-zinc-950" />
-    </div>
-  );
-};
+      className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none"
+      style={{
+        background: "linear-gradient(to bottom, transparent, #FFFFF3)",
+      }}
+    />
+  </div>
+);
 
 const CenterImage = () => {
   const { scrollY } = useScroll();
-
-  const clip1 = useTransform(scrollY, [0, 1500], [25, 0]);
-  const clip2 = useTransform(scrollY, [0, 1500], [75, 100]);
-
+  const clip1 = useTransform(scrollY, [0, 900], [22, 0]);
+  const clip2 = useTransform(scrollY, [0, 900], [78, 100]);
   const clipPath = useMotionTemplate`polygon(${clip1}% ${clip1}%, ${clip2}% ${clip1}%, ${clip2}% ${clip2}%, ${clip1}% ${clip2}%)`;
-
-  const backgroundSize = useTransform(
-    scrollY,
-    [0, SECTION_HEIGHT + 500],
-    ["170%", "100%"]
-  );
-  const opacity = useTransform(
-    scrollY,
-    [SECTION_HEIGHT, SECTION_HEIGHT + 500],
-    [1, 0]
-  );
+  const scale = useTransform(scrollY, [0, 900], [1.12, 1]);
 
   return (
     <motion.div
       className="sticky top-0 h-screen w-full"
       style={{
         clipPath,
-        backgroundSize,
-        opacity,
-        backgroundImage:
-          "url(https://images.unsplash.com/photo-1460186136353-977e9d6085a1?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)",
+        scale,
+        backgroundImage: "url(/image.png)",
+        backgroundSize: "cover",
         backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
       }}
     />
   );
 };
 
-const ParallaxImages = () => {
-  return (
-    <div className="mx-auto max-w-5xl px-4 pt-[200px]">
-      <ParallaxImg
-        src="https://images.unsplash.com/photo-1484600899469-230e8d1d59c0?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        alt="And example of a space launch"
-        start={-200}
-        end={200}
-        className="w-1/3"
-      />
-      <ParallaxImg
-        src="https://images.unsplash.com/photo-1446776709462-d6b525c57bd3?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        alt="An example of a space launch"
-        start={200}
-        end={-250}
-        className="mx-auto w-2/3"
-      />
-      <ParallaxImg
-        src="https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?q=80&w=2370&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        alt="Orbiting satellite"
-        start={-200}
-        end={200}
-        className="ml-auto w-1/3"
-      />
-      <ParallaxImg
-        src="https://images.unsplash.com/photo-1494022299300-899b96e49893?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        alt="Orbiting satellite"
-        start={0}
-        end={-500}
-        className="ml-24 w-5/12"
-      />
-    </div>
-  );
-};
+const ParallaxImages = () => (
+  <div className="mx-auto max-w-6xl px-4 pt-[120px] grid grid-cols-2 md:grid-cols-3 gap-5">
+    {images.map((src, i) => (
+      <ParallaxImg key={i} src={src} start={i % 2 === 0 ? -70 : 70} end={i % 2 === 0 ? 70 : -70} />
+    ))}
+  </div>
+);
 
-const ParallaxImg = ({ className, alt, src, start, end }) => {
+const ParallaxImg = ({ src, start, end }) => {
   const ref = useRef(null);
-
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: [`${start}px end`, `end ${end * -1}px`],
+    offset: ["start end", "end start"],
   });
-
-  const opacity = useTransform(scrollYProgress, [0.75, 1], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0.75, 1], [1, 0.85]);
-
   const y = useTransform(scrollYProgress, [0, 1], [start, end]);
-  const transform = useMotionTemplate`translateY(${y}px) scale(${scale})`;
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.96]);
 
   return (
     <motion.img
-      src={src}
-      alt={alt}
-      className={className}
       ref={ref}
-      style={{ transform, opacity }}
+      src={src}
+      className="w-full h-[200px] object-cover rounded-xl"
+      style={{
+        y,
+        scale,
+        boxShadow: "0 4px 24px rgba(3,3,1,0.08)",
+      }}
     />
   );
 };
 
-const Schedule = () => {
-  return (
-    <section
-      id="launch-schedule"
-      className="mx-auto max-w-5xl px-4 py-48 text-white"
-    >
-      <motion.h1
-        initial={{ y: 48, opacity: 0 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        transition={{ ease: "easeInOut", duration: 0.75 }}
-        className="mb-20 text-4xl font-black uppercase text-zinc-50"
-      >
-        Launch Schedule
-      </motion.h1>
-      <ScheduleItem title="NG-21" date="April " location="Florida" />
-      <ScheduleItem title="Starlink" date="April h" location="Texas" />
-      <ScheduleItem title="Starlink" date="Jan 13th" location="Florida" />
-      <ScheduleItem title="Turksat 6A" date="Feb 22nd" location="Florida" />
-      <ScheduleItem title="NROL-186" date="Mar 1st" location="California" />
-      <ScheduleItem title="GOES-U" date="Mar 8th" location="California" />
-      <ScheduleItem title="ASTRA 1P" date="Apr 8th" location="Texas" />
-    </section>
-  );
-};
-
-const ScheduleItem = ({ title, date, location }) => {
-  return (
-    <motion.div
-      initial={{ y: 48, opacity: 0 }}
+const Timeline = () => (
+  <section className="mx-auto max-w-5xl px-4 py-28">
+    <motion.h2
+      initial={{ y: 40, opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
-      transition={{ ease: "easeInOut", duration: 0.75 }}
-      className="mb-9 flex items-center justify-between border-b border-zinc-800 px-3 pb-9"
+      viewport={{ once: true }}
+      transition={{ duration: 0.7 }}
+      className="mb-16 text-3xl md:text-4xl font-black tracking-tight"
+      style={{ color: "#030301" }}
     >
-      <div>
-        <p className="mb-1.5 text-xl text-zinc-50">{title}</p>
-        <p className="text-sm uppercase text-zinc-500">{date}</p>
-      </div>
-      <div className="flex items-center gap-1.5 text-end text-sm uppercase text-zinc-500">
-        <p>{location}</p>
-        <FiMapPin />
-      </div>
-    </motion.div>
-  );
-};
+      Workflow
+    </motion.h2>
+
+    <div className="space-y-8">
+      {timeline.map((item, i) => (
+        <motion.div
+          key={i}
+          initial={{ y: 30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: i * 0.08 }}
+          className="pl-6"
+          style={{ borderLeft: `2px solid #FF4365` }}
+        >
+          <p
+            className="font-mono text-xs font-bold tracking-widest uppercase mb-1"
+            style={{ color: "#FF4365" }}
+          >
+            {item.phase}
+          </p>
+          <p className="text-base font-bold" style={{ color: "#030301" }}>
+            {item.title}
+          </p>
+          <p className="text-sm mt-0.5" style={{ color: "rgba(3,3,1,0.45)" }}>
+            {item.description}
+          </p>
+        </motion.div>
+      ))}
+    </div>
+  </section>
+);

@@ -1,207 +1,143 @@
 import React, { useState } from "react";
-import {
-  FiBarChart,
-  FiChevronDown,
-  FiChevronsRight,
-  FiDollarSign,
-  FiHome,
-  FiMonitor,
-  FiShoppingCart,
-  FiTag,
-  FiUsers,
-} from "react-icons/fi";
+import { FiHome, FiMonitor, FiBarChart, FiChevronsRight } from "react-icons/fi";
 import { motion } from "framer-motion";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export const RetractingSidebar = () => {
+  const location = useLocation();
+  if (location.pathname === "/") return null;
   return (
-    <div className="flex bg-indigo-50">
+    <div className="flex">
       <Sidebar />
-      <ExampleContent />
     </div>
   );
 };
 
 const Sidebar = () => {
   const [open, setOpen] = useState(true);
-  const [selected, setSelected] = useState("Dashboard");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const selected = location.pathname;
 
   return (
     <motion.nav
       layout
-      className="sticky top-0 h-screen shrink-0 border-r border-slate-300 bg-white p-2"
+      className="sticky top-0 h-screen shrink-0"
       style={{
-        width: open ? "225px" : "fit-content",
+        width: open ? "220px" : "68px",
+        background: "#FFFFF3",
+        borderRight: "1px solid rgba(3,3,1,0.08)",
+        padding: "8px",
       }}
     >
       <TitleSection open={open} />
-
       <div className="space-y-1">
-        <Option
-          Icon={FiHome}
-          title="Dashboard"
-          selected={selected}
-          setSelected={setSelected}
-          open={open}
-        />
-        <Option
-          Icon={FiDollarSign}
-          title="Sales"
-          selected={selected}
-          setSelected={setSelected}
-          open={open}
-          notifs={3}
-        />
-        <Option
-          Icon={FiMonitor}
-          title="View Site"
-          selected={selected}
-          setSelected={setSelected}
-          open={open}
-        />
-        <Option
-          Icon={FiShoppingCart}
-          title="Products"
-          selected={selected}
-          setSelected={setSelected}
-          open={open}
-        />
-        <Option
-          Icon={FiTag}
-          title="Tags"
-          selected={selected}
-          setSelected={setSelected}
-          open={open}
-        />
-        <Option
-          Icon={FiBarChart}
-          title="Analytics"
-          selected={selected}
-          setSelected={setSelected}
-          open={open}
-        />
-        <Option
-          Icon={FiUsers}
-          title="Members"
-          selected={selected}
-          setSelected={setSelected}
-          open={open}
-        />
+        {[
+          { Icon: FiHome, title: "Home", route: "/" },
+          { Icon: FiMonitor, title: "Upload", route: "/upload" },
+          { Icon: FiBarChart, title: "Dashboard", route: "/dashboard" },
+        ].map(({ Icon, title, route }) => (
+          <Option
+            key={route}
+            Icon={Icon}
+            title={title}
+            route={route}
+            selected={selected}
+            open={open}
+            navigate={navigate}
+          />
+        ))}
       </div>
-
       <ToggleClose open={open} setOpen={setOpen} />
     </motion.nav>
   );
 };
 
-const Option = ({ Icon, title, selected, setSelected, open, notifs }) => {
+const Option = ({ Icon, title, route, selected, open, navigate }) => {
+  const active = selected === route;
   return (
     <motion.button
       layout
-      onClick={() => setSelected(title)}
-      className={`relative flex h-10 w-full items-center rounded-md transition-colors ${selected === title ? "bg-indigo-100 text-indigo-800" : "text-slate-500 hover:bg-slate-100"}`}
+      onClick={() => navigate(route)}
+      className="flex h-10 w-full items-center rounded-xl transition-all duration-150"
+      style={{
+        background: active ? "rgba(255,67,101,0.1)" : "transparent",
+        color: active ? "#FF4365" : "rgba(3,3,1,0.4)",
+      }}
+      onMouseEnter={(e) => {
+        if (!active) e.currentTarget.style.background = "rgba(3,3,1,0.05)";
+      }}
+      onMouseLeave={(e) => {
+        if (!active) e.currentTarget.style.background = "transparent";
+      }}
     >
-      <motion.div
-        layout
-        className="grid h-full w-10 place-content-center text-lg"
-      >
+      <div className="grid w-10 place-content-center text-lg">
         <Icon />
-      </motion.div>
+      </div>
       {open && (
-        <motion.span
-          layout
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.125 }}
-          className="text-xs font-medium"
-        >
-          {title}
-        </motion.span>
-      )}
-
-      {notifs && open && (
-        <motion.span
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{
-            opacity: 1,
-            scale: 1,
-          }}
-          style={{ y: "-50%" }}
-          transition={{ delay: 0.5 }}
-          className="absolute right-2 top-1/2 size-4 rounded bg-indigo-500 text-xs text-white"
-        >
-          {notifs}
-        </motion.span>
+        <span className="text-sm font-medium">{title}</span>
       )}
     </motion.button>
   );
 };
 
-const TitleSection = ({ open }) => {
-  return (
-    <div className="mb-3 border-b border-slate-300 pb-3">
-      <div className="flex cursor-pointer items-center justify-between rounded-md transition-colors hover:bg-slate-100">
-        <div className="flex items-center gap-2">
-          <Logo />
-          {open && (
-            <motion.div
-              layout
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.125 }}
-            >
-              <span className="block text-xs font-semibold">TomIsLoading</span>
-              <span className="block text-xs text-slate-500">Pro Plan</span>
-            </motion.div>
-          )}
-        </div>
-        {open && <FiChevronDown className="mr-2" />}
-      </div>
-    </div>
-  );
-};
-
-const Logo = () => {
-    return (
-      <motion.div className="grid size-10 shrink-0 place-content-center rounded-md bg-indigo-600">
-        <img
-          src='./image.png'   // 👈 your file name here
-          alt="Logo"
-          className="w-6 h-6 object-contain"
-        />
-      </motion.div>
-    );
-  };
-
-const ToggleClose = ({ open, setOpen }) => {
-  return (
-    <motion.button
-      layout
-      onClick={() => setOpen((pv) => !pv)}
-      className="absolute bottom-0 left-0 right-0 border-t border-slate-300 transition-colors hover:bg-slate-100"
-    >
-      <div className="flex items-center p-2">
-        <motion.div
-          layout
-          className="grid size-10 place-content-center text-lg"
-        >
-          <FiChevronsRight
-            className={`transition-transform ${open && "rotate-180"}`}
-          />
-        </motion.div>
-        {open && (
-          <motion.span
-            layout
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.125 }}
-            className="text-xs font-medium"
+const TitleSection = ({ open }) => (
+  <div
+    className="mb-3 pb-3"
+    style={{ borderBottom: "1px solid rgba(3,3,1,0.08)" }}
+  >
+    <div className="flex items-center gap-2">
+      <Logo />
+      {open && (
+        <div>
+          <span
+            className="block text-sm font-black tracking-wider"
+            style={{ color: "#030301" }}
           >
-            Hide
-          </motion.span>
-        )}
-      </div>
-    </motion.button>
-  );
-};
+            Kritrium
+          </span>
+          <span
+            className="block text-[10px] font-mono tracking-widest uppercase"
+            style={{ color: "rgba(3,3,1,0.35)" }}
+          >
+            Dashboard
+          </span>
+        </div>
+      )}
+    </div>
+  </div>
+);
 
-const ExampleContent = () => <div className="h-[200vh] w-full"></div>;
+const Logo = () => (
+  <div
+    className="grid size-9 place-content-center rounded-lg shrink-0"
+    style={{ background: "#FF4365" }}
+  >
+    <img src="/image.png" alt="logo" className="w-5 h-5 object-contain" />
+  </div>
+);
+
+const ToggleClose = ({ open, setOpen }) => (
+  <motion.button
+    layout
+    onClick={() => setOpen((p) => !p)}
+    className="absolute bottom-0 left-0 right-0 flex items-center p-2 transition-all duration-150"
+    style={{
+      borderTop: "1px solid rgba(3,3,1,0.08)",
+      color: "rgba(3,3,1,0.35)",
+    }}
+    onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(3,3,1,0.04)")}
+    onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+  >
+    <div className="grid size-10 place-content-center text-lg">
+      <FiChevronsRight
+        className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+      />
+    </div>
+    {open && (
+      <span className="text-sm font-medium" style={{ color: "rgba(3,3,1,0.4)" }}>
+        Collapse
+      </span>
+    )}
+  </motion.button>
+);

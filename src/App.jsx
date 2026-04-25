@@ -1,37 +1,15 @@
 import "./index.css";
-import {RetractingSidebar} from './components/RetractingSidebar';
-// function App() {
-//   const [count, setCount] = useState(0)
 
-//   return (
-//     <div>
-//       {/* <section className="min-h-screen">
-//         <LoginMotion />
-//        </section> */}
-// {/* 
-//        <section className="min-h-screen">
-//         <VelocityText />
-//       </section>
-
-//       <section className="min-h-screen">
-//         <RevealBento />
-//       </section>
-
-//       <section className="min-h-screen">
-//         <SmoothScrollHero />
-//       </section>  */}
-//     <RetractingSidebar />
-//     </div>
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Landing from "./landing/Landing";
 import Dashboard from "./pages/Dashboard";
 import Upload from "./pages/Upload";
-import { RetractingSidebar } from "./components/Sidebar";
+import { RetractingSidebar } from "./components/RetractingSidebar";
 
 function LayoutWrapper({ children }) {
   const location = useLocation();
 
-  const hideSidebar = location.pathname === "/";
+  const hideSidebar = location.pathname.startsWith("/");
 
   return (
     <div className="flex">
